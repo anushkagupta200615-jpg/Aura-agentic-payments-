@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-aura-500: #8a2be2;
+  --color-aura-400: #a855f7;
+  --color-aura-600: #7e22ce;
+  --color-aura-glow: rgba(138, 43, 226, 0.5);
+  
+  --color-bg-base: #050505;
+  --color-bg-surface: #121212;
+  --color-bg-surface-glass: rgba(18, 18, 18, 0.7);
+  
+  --color-text-main: #f3f4f6;
+  --color-text-muted: #9ca3af;
+}
+
+@layer base {
+  :root {
+    --background: var(--color-bg-base);
+    --foreground: var(--color-text-main);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background-color: var(--color-bg-surface-glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .aura-glow {
+    box-shadow: 0 0 25px var(--color-aura-glow);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(to right, var(--color-aura-400), #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
