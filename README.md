@@ -42,4 +42,4 @@ sequenceDiagram
    ```bash
    npm run dev
    ```
-4. Open [http://localhost:3000](http://localhost:3000) and explore the interactive simulator!
+4. Open the development URL shown in your terminal (usually http://localhost:3000) and explore the interactive simulator!
