@@ -10,51 +10,65 @@ export default function AuraDashboard({ onPaymentExecute }: { onPaymentExecute: 
   const { attentionLogs, agentLogs, addAgentLog, clearAttention } = useAura();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (attentionLogs.length === 0) {
       addAgentLog("No significant attention detected. Nothing to analyze.", "info");
       return;
     }
 
     setIsAnalyzing(true);
-    addAgentLog("Analyzing attention telemetry...", "analysis");
+    addAgentLog("Sending telemetry to Aura Agent Backend...", "analysis");
 
-    // Simulate AI Agent processing delay
-    setTimeout(() => {
-      let totalTime = 0;
-      attentionLogs.forEach((log) => (totalTime += log.timeSpentMs));
-
-      if (totalTime < 3000) {
-        addAgentLog(`Total interaction time (${(totalTime / 1000).toFixed(1)}s) below payment threshold.`, "info");
+    try {
+      // 1. Call Analysis API
+      const res = await fetch("/api/agent/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ logs: attentionLogs })
+      });
+      
+      const data = await res.json();
+      
+      if (!data.success) {
+        addAgentLog(data.message || "Attention below threshold.", "info");
         setIsAnalyzing(false);
         clearAttention();
         return;
       }
 
-      addAgentLog(`Identified ${attentionLogs.length} valuable interactions. Calculating fair distribution...`, "analysis");
+      addAgentLog(data.message, "analysis");
 
-      setTimeout(() => {
-        // Execute payments proportionally
-        const HOURLY_RATE_USDC = 0.50; // User is willing to spend 0.50 USDC per hour of content
-        
-        attentionLogs.forEach((log, index) => {
-          setTimeout(() => {
-            const hoursSpent = log.timeSpentMs / (1000 * 60 * 60);
-            const payoutAmount = Math.max(0.0001, hoursSpent * HOURLY_RATE_USDC); // Minimum 0.0001
+      // 2. Execute Payments
+      if (data.payouts && data.payouts.length > 0) {
+        data.payouts.forEach((payout: any, index: number) => {
+          setTimeout(async () => {
+            addAgentLog(`Initiating smart contract execution for ${payout.title}...`, "info");
             
-            addAgentLog(`Executing micro-payment for ${log.title}`, "payment", payoutAmount, log.creator);
-            onPaymentExecute(payoutAmount);
-          }, index * 800); // Stagger payments for visual effect
+            // 3. Call Execution API
+            const execRes = await fetch("/api/payments/execute", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ payout })
+            });
+            const execData = await execRes.json();
+            
+            if (execData.success) {
+              addAgentLog(`Tx Hash: ${execData.txHash} confirmed.`, "payment", payout.amount, payout.creator);
+              onPaymentExecute(payout.amount);
+            }
+          }, index * 1200); // Stagger
         });
 
         setTimeout(() => {
           setIsAnalyzing(false);
           clearAttention();
           addAgentLog("Distribution complete. Waiting for new attention data.", "info");
-        }, attentionLogs.length * 800 + 500);
-
-      }, 1500);
-    }, 1500);
+        }, data.payouts.length * 1200 + 500);
+      }
+    } catch (error) {
+      addAgentLog("Error connecting to Agent API.", "info");
+      setIsAnalyzing(false);
+    }
   };
 
   return (
