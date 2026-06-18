@@ -4,11 +4,13 @@
   --color-aura-500: #8a2be2;
   --color-aura-400: #a855f7;
   --color-aura-600: #7e22ce;
+  --color-aura-300: #c084fc;
   --color-aura-glow: rgba(138, 43, 226, 0.5);
   
   --color-bg-base: #050505;
-  --color-bg-surface: #121212;
-  --color-bg-surface-glass: rgba(18, 18, 18, 0.7);
+  --color-bg-surface: #0e0e10;
+  --color-bg-surface-glass: rgba(14, 14, 16, 0.75);
+  --color-bg-card: rgba(255, 255, 255, 0.03);
   
   --color-text-main: #f3f4f6;
   --color-text-muted: #9ca3af;
@@ -24,24 +26,89 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Smooth scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(138, 43, 226, 0.3) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgba(138, 43, 226, 0.3);
+    border-radius: 3px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(138, 43, 226, 0.5);
   }
 }
 
 @layer utilities {
   .glass-panel {
     background-color: var(--color-bg-surface-glass);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
   
   .aura-glow {
-    box-shadow: 0 0 25px var(--color-aura-glow);
+    box-shadow: 0 0 30px var(--color-aura-glow), 0 0 60px rgba(138, 43, 226, 0.2);
   }
   
   .text-gradient {
-    background: linear-gradient(to right, var(--color-aura-400), #ec4899);
+    background: linear-gradient(135deg, var(--color-aura-400), #ec4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* Step number circles */
+  .step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Shimmer loading effect */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(138, 43, 226, 0.08) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Pulse glow for active tracking */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.2); }
+    50% { box-shadow: 0 0 25px rgba(138, 43, 226, 0.4); }
+  }
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
