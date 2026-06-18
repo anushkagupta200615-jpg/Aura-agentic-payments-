@@ -2,6 +2,9 @@
 
 Aura is an **Autonomous Micro-Patron Platform** built for the Team1 India Speedrun hackathon (Theme: Agentic Payments). It leverages AI to monitor a user's genuine attention and autonomously streams micro-payments to creators without paywalls or ads.
 
+### 🌐 [Live Demo → aura-app-lac-xi.vercel.app](https://aura-app-lac-xi.vercel.app)
+
+
 ## 🚀 The Vision
 The internet is currently broken for long-tail creators. Paywalls cause extreme friction, and ads ruin the user experience. Aura fixes this by acting as a "Financial Copilot". 
 Users deposit a monthly Patron Budget. As they browse the web (read articles, watch videos, use GitHub repos), the Aura Agent silently tracks their interaction. It then uses algorithmic reasoning to distribute micro-transactions fairly to the creators who provided the most value.
