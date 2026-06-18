@@ -12,12 +12,13 @@ import { useAccount } from 'wagmi';
 export default function Home() {
   const { isConnected } = useAccount();
   const [patronBudget, setPatronBudget] = useState(10.00);
+  const [skippedWallet, setSkippedWallet] = useState(false);
   
   const handlePaymentExecution = (amount: number) => {
     setPatronBudget((prev) => Math.max(0, prev - amount));
   };
 
-  if (!isConnected) {
+  if (!isConnected && !skippedWallet) {
     return (
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-aura-600/20 via-bg-base to-bg-base pointer-events-none" />
@@ -41,7 +42,7 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-6 mb-10 text-left">
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
               <div className="text-aura-400 font-bold mb-2">1. Deposit</div>
-              <p className="text-sm text-gray-400">Set a monthly patron budget (e.g., 10 USDC). You never have to manually click "donate" or hit a paywall again.</p>
+              <p className="text-sm text-gray-400">Set a monthly patron budget (e.g., 10 USDC). You never have to manually click &quot;donate&quot; or hit a paywall again.</p>
             </div>
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
               <div className="text-pink-400 font-bold mb-2">2. Consume</div>
@@ -53,8 +54,14 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="flex justify-center mt-6">
+          <div className="flex flex-col items-center gap-4 mt-6">
             <ConnectButton label="Connect Web3 Wallet to Enter Simulator" />
+            <button
+              onClick={() => setSkippedWallet(true)}
+              className="text-sm text-text-muted hover:text-white transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-white/60"
+            >
+              Continue without wallet →
+            </button>
           </div>
         </motion.div>
       </div>
@@ -84,11 +91,17 @@ export default function Home() {
             <div className="h-6 w-px bg-white/10" />
 
             <div className="flex items-center gap-3">
-              <ConnectButton 
-                accountStatus="address" 
-                chainStatus="icon" 
-                showBalance={false}
-              />
+              {isConnected ? (
+                <ConnectButton 
+                  accountStatus="address" 
+                  chainStatus="icon" 
+                  showBalance={false}
+                />
+              ) : (
+                <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-aura-600/20 text-aura-300 border border-aura-500/30">
+                  Demo Mode
+                </span>
+              )}
             </div>
           </div>
         </header>
