@@ -15,7 +15,7 @@ interface FeedItem {
 }
 
 export default function ContentFeed() {
-  const { handleAttention } = useAura();
+  const { addAttention } = useAura();
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [localTimes, setLocalTimes] = useState<Record<string, number>>({});
   const [feedData, setFeedData] = useState<FeedItem[]>([]);
@@ -70,7 +70,7 @@ export default function ContentFeed() {
         // Find the active item data to send to the global provider
         const itemData = feedData.find(i => i.id === activeItem);
         if (itemData) {
-          handleAttention(activeItem, itemData.title, itemData.author, 100);
+          addAttention(activeItem, itemData.title, itemData.author, 100);
         }
       }, 100);
     }
@@ -78,7 +78,7 @@ export default function ContentFeed() {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [activeItem, handleAttention, feedData]);
+  }, [activeItem, addAttention, feedData]);
 
   return (
     <div className="max-w-xl mx-auto py-4">
