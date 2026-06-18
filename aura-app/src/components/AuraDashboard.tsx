@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useAura } from "./AuraProvider";
-import { BrainCircuit, Zap, Activity, ChevronRight, CheckCircle2, BarChart3, TerminalSquare } from "lucide-react";
+import { BrainCircuit, Zap, Activity, ChevronRight, CheckCircle2, BarChart3, TerminalSquare, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import AnalyticsDashboard from "./AnalyticsDashboard";
