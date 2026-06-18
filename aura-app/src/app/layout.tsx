@@ -3,11 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Web3Provider } from "@/components/Web3Provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "800"] });
 
 export const metadata: Metadata = {
-  title: "Aura Agentic Payments",
-  description: "Autonomous micro-patron platform built for Team1 Speedrun",
+  title: "Aura Patron — AI-Powered Autonomous Creator Payments",
+  description: "An autonomous micro-patron platform where AI agents track your content attention and stream fair micro-payments to creators via USDC on-chain. No clicks, no paywalls.",
 };
 
 export default function RootLayout({
@@ -16,14 +16,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} antialiased bg-bg-base text-text-main selection:bg-aura-500/30`}>
-        <main className="min-h-screen relative overflow-hidden">
-          {/* Global Background Glow Elements */}
-          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-aura-600/20 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-pink-600/10 rounded-full blur-[100px] pointer-events-none" />
+    <html lang="en" className="dark h-full">
+      <body className={`${inter.className} antialiased bg-bg-base text-text-main selection:bg-aura-500/30 h-full`}>
+        <main className="h-full relative overflow-hidden">
+          {/* Noise texture overlay for premium feel */}
+          <div className="noise-overlay" />
           
-          <div className="relative z-10 min-h-screen">
+          {/* Global Ambient Glow Orbs */}
+          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-aura-600/15 rounded-full blur-[140px] pointer-events-none animate-pulse" style={{ animationDuration: '8s' }} />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-rose-500/8 rounded-full blur-[120px] pointer-events-none animate-pulse" style={{ animationDuration: '10s' }} />
+          <div className="absolute top-[30%] left-[40%] w-[35%] h-[35%] bg-teal-500/6 rounded-full blur-[130px] pointer-events-none animate-pulse" style={{ animationDuration: '12s' }} />
+          
+          <div className="relative z-10 h-full">
             <Web3Provider>
               {children}
             </Web3Provider>
