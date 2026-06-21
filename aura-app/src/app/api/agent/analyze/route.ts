@@ -25,6 +25,12 @@ export async function POST(request: Request) {
       });
     }
 
+    const agentIdentity = {
+      standard: "ERC-8004",
+      passportId: "did:aura:0x7F5...A2B",
+      trustScore: 98.5
+    };
+
     // Check if API key is provided for real LLM reasoning
     if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       try {
@@ -51,6 +57,7 @@ export async function POST(request: Request) {
           success: true,
           message: object.message,
           payouts: object.payouts,
+          agentIdentity,
         });
 
       } catch (llmError) {
@@ -70,6 +77,7 @@ export async function POST(request: Request) {
       success: true,
       message: `(Fallback Mode) Identified ${logs.length} interactions. Calculated fair distribution based on strict time mechanics.`,
       payouts,
+      agentIdentity,
     });
     
   } catch (error) {

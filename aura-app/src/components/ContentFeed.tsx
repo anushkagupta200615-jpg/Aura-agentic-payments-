@@ -58,6 +58,7 @@ const typeConfig = {
 export default function ContentFeed() {
   const { addAttention } = useAura();
   const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [localTimes, setLocalTimes] = useState<Record<string, number>>({});
   const [feedData, setFeedData] = useState<FeedItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -184,8 +185,7 @@ export default function ContentFeed() {
                 layout
                 onMouseEnter={() => setActiveItem(item.id)}
                 onMouseLeave={() => setActiveItem(null)}
-                // For mobile support
-                onClick={() => setActiveItem(isHovered ? null : item.id)}
+                onClick={() => setExpandedItem(expandedItem === item.id ? null : item.id)}
                 className={cn(
                   "glass-panel rounded-2xl p-4 sm:p-5 transition-all duration-300 relative overflow-hidden group cursor-pointer card-hover-lift gradient-border",
                   isHovered ? "border-aura-500/40" : "border-white/5"
@@ -286,6 +286,37 @@ export default function ContentFeed() {
                     </div>
                   </div>
                 )}
+
+                {/* Expanded Details Section */}
+                <AnimatePresence>
+                  {expandedItem === item.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                      animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                      className="overflow-hidden sm:pl-[3.25rem] relative z-20"
+                    >
+                      <div className="pt-4 border-t border-white/10 text-xs sm:text-sm text-gray-300 space-y-3">
+                        <p>
+                          <strong className="text-white">Expanded View:</strong> This is a detailed look at <em>{item.title}</em>. 
+                          In a full production environment, this area would seamlessly render the repository README, the full article text, or stream the video directly within the card.
+                        </p>
+                        <div className="p-3 bg-black/40 rounded-xl border border-white/5 font-mono text-[10px] sm:text-xs text-aura-300">
+                          <span className="text-gray-500">// Content Metadata</span><br/>
+                          id: &quot;{item.id}&quot;<br/>
+                          creator_address: &quot;0x{Math.random().toString(16).slice(2, 10)}...&quot;<br/>
+                          engagement_multiplier: {item.type === 'github' ? '1.5x (Technical)' : '1.0x (Standard)'}
+                        </div>
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); setExpandedItem(null); }}
+                          className="px-4 py-2 mt-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors text-white border border-white/10"
+                        >
+                          Close Details
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             );
           })}

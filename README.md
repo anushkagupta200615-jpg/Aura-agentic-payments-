@@ -15,6 +15,7 @@ Users deposit a monthly Patron Budget. As they browse the web (read articles, wa
 - **Framer Motion Interactivity:** Every element is animated—from staggered loading cards and physics-based hover states to floating background particles.
 - **Dynamic Feedback:** Real-time visual updates, including an animated Wallet Budget pill that flashes amber when a simulated smart contract executes.
 - **AI Agent Dashboard:** A custom hacker-style terminal that renders real-time LLM reasoning logs, blurring them in dynamically as the agent processes telemetry.
+- **Agentic Standards (ERC-8004 & L402):** The platform simulates an on-chain verifiable **ERC-8004 Agent Identity** with trust scores during its reasoning cycle, and handles the resulting payouts via **L402 Protocol** Lightning Network micro-payments (invoices and macaroons).
 
 ## 🏗️ Architecture
 

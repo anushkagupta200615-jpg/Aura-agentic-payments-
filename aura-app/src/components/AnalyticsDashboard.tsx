@@ -138,6 +138,26 @@ export default function AnalyticsDashboard() {
         })}
       </div>
 
+      {/* ERC-8004 Agent Identity Card */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="glass-panel p-4 sm:p-5 rounded-2xl border border-aura-500/20 mb-6 bg-gradient-to-r from-aura-500/10 to-transparent flex items-center justify-between"
+      >
+        <div>
+          <h3 className="text-sm font-semibold text-aura-300 flex items-center gap-2 mb-1">
+            <span className="w-2 h-2 rounded-full bg-aura-400 animate-pulse" />
+            ERC-8004 Identity
+          </h3>
+          <p className="text-xs text-text-dim">Passport: <span className="font-mono text-white">did:aura:0x7F5...A2B</span></p>
+        </div>
+        <div className="text-right">
+          <div className="text-lg font-bold text-teal-400">98.5</div>
+          <div className="text-[10px] text-text-dim uppercase tracking-wider">Trust Score</div>
+        </div>
+      </motion.div>
+
       {/* Main Chart */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}

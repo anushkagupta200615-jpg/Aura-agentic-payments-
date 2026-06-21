@@ -111,6 +111,10 @@ export default function AuraDashboard({ onPaymentExecute }: { onPaymentExecute: 
         return;
       }
 
+      if (data.agentIdentity) {
+        addAgentLog(`[ERC-8004] Agent Identity Verified. Passport: ${data.agentIdentity.passportId} (Trust Score: ${data.agentIdentity.trustScore})`, "info");
+      }
+
       addAgentLog(data.message, "analysis");
 
       if (data.payouts && data.payouts.length > 0) {
@@ -125,9 +129,14 @@ export default function AuraDashboard({ onPaymentExecute }: { onPaymentExecute: 
             });
             const execData = await execRes.json();
             
-            if (execData.success) {
-              addAgentLog(`Tx Hash: ${execData.txHash} confirmed.`, "payment", payout.amount, payout.creator);
-              onPaymentExecute(payout.amount);
+            if (execData.success || execRes.status === 402) {
+              if (execData.isL402) {
+                addAgentLog(`[L402] Settled Lightning invoice: ${execData.invoice}`, "payment", payout.amount, payout.creator);
+                onPaymentExecute(payout.amount);
+              } else {
+                addAgentLog(`Tx Hash: ${execData.txHash} confirmed.`, "payment", payout.amount, payout.creator);
+                onPaymentExecute(payout.amount);
+              }
             }
           }, index * 1200);
         });
